@@ -2,12 +2,12 @@ $:.push File.expand_path("../lib", __FILE__)
 require "hubspot/version"
 
 Gem::Specification.new do |s|
-  s.name        = "hubspot-api-client"
+  s.name        = "hubspot-api-client-patched-pn"
   s.version     = Hubspot::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["HubSpot"]
+  s.authors     = ["primeNumber"]
   s.email       = [""]
-  s.homepage    = "https://github.com/HubSpot/hubspot-api-ruby"
+  s.homepage    = "https://github.com/primenumber-dev/hubspot-api-ruby"
   s.summary     = "HubSpot Ruby API Gem"
   s.description = "HubSpot Ruby API client"
   s.license     = "Unlicense"
