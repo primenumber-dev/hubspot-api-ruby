@@ -5,8 +5,6 @@ require_rel 'hubspot/*.rb'
 require_rel 'hubspot/helpers'
 require_rel 'hubspot'
 
-require_relative 'hubspot/patch_skip_hapikey'
-
 module Hubspot
   class << self
     CLIENTS = [
@@ -47,3 +45,5 @@ module Hubspot
     end
   end
 end
+
+require_relative 'hubspot_patches/skip_hapikey'
