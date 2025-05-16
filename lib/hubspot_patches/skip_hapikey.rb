@@ -1,19 +1,22 @@
-# HubSpot API 9.5.1 Monkey-Patch : skip blank hapikey on OAuth
 module Hubspot
-  module Crm
-    module Schemas
-      class ApiClient # :nodoc:
-        alias _orig_update_params_for_auth! update_params_for_auth!
-
-        def update_params_for_auth!(header_params, query_params, auth_names)
-          # hapikey が空なら除外
-          auth_names = Array(auth_names).reject do |name|
-            name == 'hapikey' && @config.api_key['hapikey'].to_s.strip.empty?
-          end
-
-          _orig_update_params_for_auth!(header_params, query_params, auth_names)
-        end
+  module SkipHapikeyPatch # :nodoc:
+    def update_params_for_auth!(header, query, auth_names)
+      filtered = Array(auth_names).reject do |name|
+        name == 'hapikey' &&
+          (@config.access_token.to_s.strip != '' ||
+            @config.api_key['hapikey'].to_s.strip.empty?)
       end
+      super(header, query, filtered)
+    end
+  end
+
+  # CRM 配下にある全ての ApiClient に prepend
+  module Crm
+    constants.each do |sub|
+      mod = const_get(sub)
+      next unless mod.const_defined?(:ApiClient)
+
+      mod::ApiClient.prepend SkipHapikeyPatch
     end
   end
 end
